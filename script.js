@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const GRIS = "#252525";
     const RED = "#F00";
     const BLUE = "#00F";
-    const Color = ["#FF00FF", "#0000FF", "#C8C800"];  // Lista de colores
+    const Color = ["#FF00FF", "#0000FF", "#C8C800", "#05ff11", "#7a2b79"];  // Lista de colores
 
     let paddle = {
         x: (SCREEN_WIDTH - PADDLE_WIDTH) / 2,
