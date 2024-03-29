@@ -101,6 +101,23 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    function collisionDetection() {
+        blocks.forEach(function(block, index) {
+            if (ball.x + ball.size > block.x &&
+                ball.x - ball.size < block.x + block.width &&
+                ball.y + ball.size > block.y &&
+                ball.y - ball.size < block.y + block.height) {
+                ball.dy = -ball.dy;
+                blocks.splice(index, 1);
+                score += 10;
+                if (score >= 600) {
+                    alert("¡Has ganado!");
+                    document.location.reload();
+                }
+            }
+        });
+    }
+
     function update() {
         ball.x += ball.dx;
         ball.y += ball.dy;
