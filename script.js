@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const BLOCK_COLUMNS = 12;
 
     // Colores
-    const WHITE = "#FFF";
+    const GRIS = "#252525";
     const RED = "#F00";
     const BLUE = "#00F";
     const Color = ["#FF00FF", "#0000FF", "#C8C800"];  // Lista de colores
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function drawBall() {
-        ctx.fillStyle = WHITE;
+        ctx.fillStyle = GRIS;
         ctx.beginPath();
         ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
         ctx.fill();
@@ -75,13 +75,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function drawScore() {
-        ctx.fillStyle = WHITE;
+        ctx.fillStyle = GRIS;
         ctx.font = "24px Arial";
         ctx.fillText("Score: " + score, SCREEN_WIDTH - 150, 30);
     }
 
     function drawGameOver() {
-        ctx.fillStyle = WHITE;
+        ctx.fillStyle = GRIS;
         ctx.font = "50px Arial";
         ctx.fillText("Game Over", SCREEN_WIDTH / 2 - 150, SCREEN_HEIGHT / 2 - 50);
         ctx.font = "24px Arial";
