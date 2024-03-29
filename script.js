@@ -149,11 +149,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let interval = setInterval(draw, 10);
 
-    canvas.addEventListener("touchmove", function(event) {
-        let touch = event.touches[0];
-        let relativeX = touch.clientX - canvas.offsetLeft;
-        if (relativeX > 0 && relativeX < SCREEN_WIDTH) {
-            paddle.x = relativeX - paddle.width / 2;
-        }
-    });
+    // Manejar eventos de mouse y táctiles
+    if ('ontouchstart' in window) {
+        canvas.addEventListener("touchmove", function(event) {
+            let touch = event.touches[0];
+            let relativeX = touch.clientX - canvas.offsetLeft;
+            if (relativeX > 0 && relativeX < SCREEN_WIDTH) {
+                paddle.x = relativeX - paddle.width / 2;
+            }
+        });
+    } else {
+        canvas.addEventListener("mousemove", function(event) {
+            let relativeX = event.clientX - canvas.offsetLeft;
+            if (relativeX > 0 && relativeX < SCREEN_WIDTH) {
+                paddle.x = relativeX - paddle.width / 2;
+            }
+        });
+    }
 });
+
