@@ -97,19 +97,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 ball.dy = -ball.dy;
                 blocks.splice(index, 1);
                 score += 10;
-            }
-        });
-    }
-
-    function collisionDetection() {
-        blocks.forEach(function(block, index) {
-            if (ball.x + ball.size > block.x &&
-                ball.x - ball.size < block.x + block.width &&
-                ball.y + ball.size > block.y &&
-                ball.y - ball.size < block.y + block.height) {
-                ball.dy = -ball.dy;
-                blocks.splice(index, 1);
-                score += 10;
                 if (score >= 600) {
                     alert("¡Has ganado!");
                     document.location.reload();
@@ -162,8 +149,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let interval = setInterval(draw, 10);
 
-    document.addEventListener("mousemove", function(event) {
-        let relativeX = event.clientX - canvas.offsetLeft;
+    canvas.addEventListener("touchmove", function(event) {
+        let touch = event.touches[0];
+        let relativeX = touch.clientX - canvas.offsetLeft;
         if (relativeX > 0 && relativeX < SCREEN_WIDTH) {
             paddle.x = relativeX - paddle.width / 2;
         }
