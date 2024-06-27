@@ -3,21 +3,21 @@ document.addEventListener("DOMContentLoaded", function() {
     const ctx = canvas.getContext("2d");
 
     // Dimensiones de la pantalla
-    const SCREEN_WIDTH = canvas.width;
-    const SCREEN_HEIGHT = canvas.height;
+    let SCREEN_WIDTH, SCREEN_HEIGHT;
 
     // Velocidad de la pelota
-    const BALL_SPEED = 2;
+    const BALL_SPEED = 1;
 
     // Dimensiones de la paleta
     const PADDLE_WIDTH = 100;
-    const PADDLE_HEIGHT = 20;
+    const PADDLE_HEIGHT = 10;
 
     // Dimensiones de los bloques
-    const BLOCK_WIDTH = 60;
+    
+    const BLOCK_ROWS = 4;
+    const BLOCK_COLUMNS = 10;
+    const BLOCK_WIDTH = (window.innerWidth - (window.innerWidth/4))/BLOCK_COLUMNS;//dimensionamos los bloques de acuerdo a la pantalla
     const BLOCK_HEIGHT = 30;
-    const BLOCK_ROWS = 5;
-    const BLOCK_COLUMNS = 12;
 
     // Colores
     const GRIS = "#252525";
@@ -25,35 +25,48 @@ document.addEventListener("DOMContentLoaded", function() {
     const BLUE = "#00F";
     const Color = ["#FF00FF", "#0000FF", "#C8C800", "#05ff11", "#7a2b79"];  // Lista de colores
 
-    let paddle = {
-        x: (SCREEN_WIDTH - PADDLE_WIDTH) / 2,
-        y: SCREEN_HEIGHT - PADDLE_HEIGHT - 10,
-        width: PADDLE_WIDTH,
-        height: PADDLE_HEIGHT
-    };
+    // Variables del juego
+    let paddle, ball, blocks, score, interval;
 
-    let ball = {
-        x: SCREEN_WIDTH / 2,
-        y: SCREEN_HEIGHT / 2,
-        dx: BALL_SPEED * (Math.random() < 0.5 ? -1 : 1),
-        dy: BALL_SPEED * (Math.random() < 0.5 ? -1 : 1),
-        size: 10
-    };
+    // FunciÃ³n para inicializar el juego
+    function initializeGame() {
+        SCREEN_WIDTH = window.innerWidth - (window.innerWidth / 4);
+        SCREEN_HEIGHT = window.innerHeight/2;
+        canvas.width = SCREEN_WIDTH;
+        canvas.height = SCREEN_HEIGHT;
 
-    let blocks = [];
-    for (let row = 0; row < BLOCK_ROWS; row++) {
-        for (let column = 0; column < BLOCK_COLUMNS; column++) {
-            blocks.push({
-                x: BLOCK_WIDTH * column + 5,
-                y: BLOCK_HEIGHT * row + 50,
-                width: BLOCK_WIDTH,
-                height: BLOCK_HEIGHT,
-                color: Color[Math.floor(Math.random() * Color.length)]
-            });
+        paddle = {
+            x: (SCREEN_WIDTH - PADDLE_WIDTH) / 2,
+            y: SCREEN_HEIGHT - PADDLE_HEIGHT - 10,
+            width: PADDLE_WIDTH,
+            height: PADDLE_HEIGHT
+        };
+
+        ball = {
+            x: SCREEN_WIDTH / 2,
+            y: SCREEN_HEIGHT / 2,
+            dx: BALL_SPEED * (Math.random() < 0.5 ? -1 : 1),
+            dy: BALL_SPEED * (Math.random() < 0.5 ? -1 : 1),
+            size: 10
+        };
+
+        blocks = [];
+        for (let row = 0; row < BLOCK_ROWS; row++) {
+            for (let column = 0; column < BLOCK_COLUMNS; column++) {
+                blocks.push({
+                    x: BLOCK_WIDTH * column + 5,
+                    y: BLOCK_HEIGHT * row + 50,
+                    width: BLOCK_WIDTH,
+                    height: BLOCK_HEIGHT,
+                    color: Color[Math.floor(Math.random() * Color.length)]
+                });
+            }
         }
+
+        score = 0;
     }
 
-    let score = 0;
+    // Funciones del juego
 
     function drawPaddle() {
         ctx.fillStyle = RED;
@@ -85,8 +98,10 @@ document.addEventListener("DOMContentLoaded", function() {
         ctx.font = "50px Arial";
         ctx.fillText("Game Over", SCREEN_WIDTH / 2 - 150, SCREEN_HEIGHT / 2 - 50);
         ctx.font = "24px Arial";
-        ctx.fillText("Press R to restart", SCREEN_WIDTH / 2 - 120, SCREEN_HEIGHT / 2 + 50);
+        ctx.fillText("Presione r para reiniciar", SCREEN_WIDTH / 2 - 120, SCREEN_HEIGHT / 2 + 50);
     }
+
+  
 
     function collisionDetection() {
         blocks.forEach(function(block, index) {
@@ -97,8 +112,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 ball.dy = -ball.dy;
                 blocks.splice(index, 1);
                 score += 10;
-                if (score >= 600) {
-                    alert("¡Has ganado!");
+                if (score >= 399) {
+                    alert("Â¡Has ganado!");
                     document.location.reload();
                 }
             }
@@ -124,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (ball.x > paddle.x && ball.x < paddle.x + paddle.width && ball.y + ball.size > paddle.y) {
             ball.dy = -ball.dy;
         }
+        
 
         collisionDetection();
     }
@@ -137,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+   
 
     function draw() {
         ctx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -147,9 +164,18 @@ document.addEventListener("DOMContentLoaded", function() {
         update();
     }
 
-    let interval = setInterval(draw, 10);
+    // Llamamos a initializeGame() para configurar el juego inicialmente
+    initializeGame();
 
-    // Manejar eventos de mouse y táctiles
+    // Iniciar el juego
+    interval = setInterval(draw, 10);
+
+     //detectamos si alguien presiona reiniciar
+    document.getElementById('restartButton').addEventListener('click', () => {
+        document.location.reload();
+    });
+
+    // Manejar eventos de mouse y tÃ¡ctiles
     if ('ontouchstart' in window) {
         canvas.addEventListener("touchmove", function(event) {
             let touch = event.touches[0];
@@ -167,4 +193,3 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-
