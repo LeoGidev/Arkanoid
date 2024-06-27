@@ -65,7 +65,7 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;    
-    flex-grow: 1; /* Permitir crecer dinÃ¡micamente */
+    flex-grow: 1; /* Permitir crecer dinámincamente */
     margin-top: 20px;
   }
   
